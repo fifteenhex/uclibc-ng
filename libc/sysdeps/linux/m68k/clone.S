@@ -37,10 +37,18 @@ __clone:
 	/* Sanity check arguments.  */
 	movel	#-EINVAL, %d0
 	movel	4(%sp), %a0		/* no NULL function pointers */
+#ifdef __mc68000__
+	tstl	4(%sp)
+#else
 	tstl	%a0
+#endif
 	beq.w	__syscall_error_trampoline
 	movel	8(%sp), %a1		/* no NULL stack pointers */
+#ifdef __mc68000__
+	tstl	8(%sp)
+#else
 	tstl	%a1
+#endif
 	beq.w   __syscall_error_trampoline
 
 	/* Allocate space and copy the argument onto the new stack.  */
