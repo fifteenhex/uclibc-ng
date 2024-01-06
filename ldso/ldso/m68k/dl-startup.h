@@ -14,6 +14,12 @@
   OP " " SRC "(" PC "), " DST
 #endif
 
+#ifdef __mc68000__
+#define MMM "nop"
+#else
+#define MMM "lea (%sp, %d0*4), %sp"
+#endif
+
 __asm__ ("\
 	.text\n\
 	.globl _start\n\
@@ -38,7 +44,7 @@ _dl_start_user:\n\
 	# Subtract _dl_skip_args from it.\n\
 	sub.l %d0, %d1\n\
 	# Adjust the stack pointer to skip _dl_skip_args words.\n\
-	lea (%sp, %d0*4), %sp\n\
+	" MMM "\n\
 	# Push back the modified argument count.\n\
 	move.l %d1, -(%sp)\n\
 	# Pass our finalizer function to the user in %a1.\n\
