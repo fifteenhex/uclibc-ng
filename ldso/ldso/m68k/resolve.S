@@ -19,7 +19,7 @@ _dl_linux_resolve:
 	# Pop parameters
 	addq.l #8, %sp
 	# Call real function.
-#if defined __mcoldfire__
+#if defined __mcoldfire__ || defined __mc68000__
 	move.l %d0,-(%sp)
 	rts
 #else
