@@ -6,6 +6,8 @@
 
 #include <sys/syscall.h>
 
+#include "m68k_pic.S"
+
 #ifndef __NR_vfork
 #define __NR_vfork __NR_fork /* uClinux-2.0 only has fork which is vfork */
 #endif
