@@ -31,8 +31,7 @@ __vfork:
 	jmp	%a0@
 
 .Lerror:
-	/* Push back the return PC.  */
-	movel	%a0,%sp@-
+        JUMP    __syscall_error,%a0
 
 .size __vfork,.-__vfork
 weak_alias(__vfork,vfork)
