@@ -57,7 +57,7 @@ int semctl(int semid, int semnum, int cmd, ...)
     va_end (ap);
 #ifdef __NR_semctl
     int __ret = __semctl(semid, semnum, cmd | __IPC_64, arg.__pad);
-#if defined(__UCLIBC_USE_TIME64__)
+#if (__WORDSIZE == 32) && defined(__UCLIBC_USE_TIME64__)
     if (arg.__pad != NULL) {
         arg.buf->sem_otime = (__time_t)arg.buf->__sem_otime_internal_1 | (__time_t)(arg.buf->__sem_otime_internal_2) << 32;
         arg.buf->sem_ctime = (__time_t)arg.buf->__sem_ctime_internal_1 | (__time_t)(arg.buf->__sem_ctime_internal_2) << 32;

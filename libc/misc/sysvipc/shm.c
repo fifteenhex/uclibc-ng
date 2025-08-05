@@ -67,7 +67,7 @@ int shmctl(int shmid, int cmd, struct shmid_ds *buf)
 {
 #ifdef __NR_shmctl
 	int __ret = __syscall_shmctl(shmid, cmd | __IPC_64, buf);
-#if (__WORDSIZE == 32) && defined(__MIPSEL__) && defined(__UCLIBC_USE_TIME64__)
+#if (__WORDSIZE == 32) && defined(__mips) && defined(__UCLIBC_USE_TIME64__)
 	union shmun arg = {.buff = buf};
         if (arg.__pad != NULL) {
 		arg.buff->shm_atime = (__time_t)arg.buff->shm_atime_internal_1 | (__time_t)(arg.buff->shm_atime_internal_2) << 32;

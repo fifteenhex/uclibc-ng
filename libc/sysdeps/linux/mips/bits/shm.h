@@ -46,7 +46,7 @@ struct shmid_ds
   {
     struct ipc_perm shm_perm;		/* operation permission struct */
     size_t shm_segsz;			/* size of segment in bytes */
-#if defined(__UCLIBC_USE_TIME64__)
+#if (__WORDSIZE == 32) && defined(__UCLIBC_USE_TIME64__)
     unsigned long int shm_atime_internal_1;		/* time of last shmat() */
     unsigned long int shm_dtime_internal_1;		/* time of last shmdt() */
     unsigned long int shm_ctime_internal_1;		/* time of last change by shmctl() */
@@ -58,7 +58,7 @@ struct shmid_ds
     __pid_t shm_cpid;			/* pid of creator */
     __pid_t shm_lpid;			/* pid of last shmop */
     shmatt_t shm_nattch;		/* number of current attaches */
-#if defined(__UCLIBC_USE_TIME64__)
+#if (__WORDSIZE == 32) && defined(__UCLIBC_USE_TIME64__)
     unsigned short int shm_atime_internal_2;		/* time of last shmat() */
     unsigned short int shm_dtime_internal_2;		/* time of last shmdt() */
     unsigned short int shm_ctime_internal_2;		/* time of last change by shmctl() */
