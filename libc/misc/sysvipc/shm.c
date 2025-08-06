@@ -69,6 +69,7 @@ int shmctl(int shmid, int cmd, struct shmid_ds *buf)
 	int __ret = __syscall_shmctl(shmid, cmd | __IPC_64, buf);
 #if (__WORDSIZE == 32) && defined(__mips) && defined(__UCLIBC_USE_TIME64__)
 	union shmun arg = {.buff = buf};
+	// When cmd is IPC_RMID, buf should be NULL.
         if (arg.__pad != NULL) {
 		arg.buff->shm_atime = (__time_t)arg.buff->shm_atime_internal_1 | (__time_t)(arg.buff->shm_atime_internal_2) << 32;
 		arg.buff->shm_dtime = (__time_t)arg.buff->shm_dtime_internal_1 | (__time_t)(arg.buff->shm_dtime_internal_2) << 32;

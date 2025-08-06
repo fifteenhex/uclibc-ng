@@ -28,6 +28,7 @@ int msgctl(int msqid, int cmd, struct msqid_ds *buf)
 	int __ret = __libc_msgctl(msqid, cmd | __IPC_64, buf);
 #if (__WORDSIZE == 32) && defined(__UCLIBC_USE_TIME64__) && (defined(__mips) || defined(__riscv))
 	union msqun arg = {.buff = buf};
+	// When cmd is IPC_RMID, buf should be NULL.
 	if (arg.__pad != NULL) {
 		arg.buff->msg_stime = (__time_t)arg.buff->msg_stime_internal_1 | (__time_t)(arg.buff->msg_stime_internal_2) << 32;
 		arg.buff->msg_rtime = (__time_t)arg.buff->msg_rtime_internal_1 | (__time_t)(arg.buff->msg_rtime_internal_2) << 32;
