@@ -6,7 +6,7 @@
 
 #ifndef __ARCH_HAS_DEPRECATED_SYSCALLS__
 #  define __IPC_64	0x0
-#elif defined __mips__
+#elif defined __mips__ || defined __m68k__
 # if __LINUX_KERNEL_VERSION < 0x050100
 #  define __IPC_64      0x100
 # else
