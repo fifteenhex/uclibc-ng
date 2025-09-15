@@ -227,13 +227,13 @@ _dl_do_reloc (struct elf_resolve *tpnt, struct r_scope_elem *scope,
 #else
 					if (!TRY_STATIC_TLS ((struct link_map *) tls_tpnt))
 					{
-					        td->arg = _dl_make_tlsdesc_dynamic((struct link_map *) tls_tpnt, symbol_addr);
+					        td->arg = _dl_make_tlsdesc_dynamic((struct link_map *) tls_tpnt, symbol_addr + rpnt->r_addend);
 					        td->entry = _dl_tlsdesc_dynamic;
 					}
 					else
 #endif
 					{
-					        td->arg = (void*)(symbol_addr + tls_tpnt->l_tls_offset);
+					        td->arg = (void*)(symbol_addr + tls_tpnt->l_tls_offset + rpnt->r_addend);
 					        td->entry = _dl_tlsdesc_return;
 					}
 				}
