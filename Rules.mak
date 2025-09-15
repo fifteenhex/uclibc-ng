@@ -312,10 +312,6 @@ endif
 endif
 endif
 
-ifeq ($(TARGET_ARCH),aarch64)
-CPU_CFLAGS-y += -ftls-model=initial-exec
-endif
-
 $(eval $(call check-gcc-var,-std=gnu99))
 CPU_CFLAGS-y += $(CFLAG_-std=gnu99)
 
