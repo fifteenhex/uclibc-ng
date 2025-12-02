@@ -122,15 +122,32 @@ typedef struct
 # define TLS_DEFINE_INIT_TP(tp, pd) \
   void *tp = (void *) (pd) + TLS_TCB_OFFSET + TLS_PRE_TCB_SIZE
 
+#if defined(__VDSO_SUPPORT__)
+typedef unsigned long (*_gtafunc)(void);
+extern void *_get__dl__vdso_get_thread_area(void);
+#endif
 extern void * __m68k_read_tp (void);
+
+static inline void *_m68k_read_tp(void)
+{
+#if defined(__VDSO_SUPPORT__)
+	void *vdso_get_thread_area = _get__dl__vdso_get_thread_area();
+	if (vdso_get_thread_area) {
+		void *tp = (void*) ((_gtafunc)vdso_get_thread_area)();
+		return tp;
+	}
+	else
+#endif
+		return __m68k_read_tp();
+}
 
 /* Return the address of the dtv for the current thread.  */
 # define THREAD_DTV() \
-  (((tcbhead_t *) (__m68k_read_tp () - TLS_TCB_OFFSET))[-1].dtv)
+  (((tcbhead_t *) (_m68k_read_tp() - TLS_TCB_OFFSET))[-1].dtv)
 
 /* Return the thread descriptor for the current thread.  */
 # define THREAD_SELF \
-  ((struct pthread *) (__m68k_read_tp () - TLS_TCB_OFFSET - TLS_PRE_TCB_SIZE))
+  ((struct pthread *) (_m68k_read_tp() - TLS_TCB_OFFSET - TLS_PRE_TCB_SIZE))
 
 /* Magic for libthread_db to know how to do THREAD_SELF.  */
 # define DB_THREAD_SELF \

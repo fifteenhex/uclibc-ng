@@ -5,6 +5,7 @@
 
 #define __ARCH_VDSO_GETTIMEOFDAY_NAME    "__vdso_gettimeofday"
 #define __ARCH_VDSO_CLOCK_GETTIME_NAME   "__vdso_clock_gettime"
+#define __ARCH_VDSO_GET_THREAD_AREA      "__vdso_get_thread_area"
 
 #if defined(__UCLIBC_USE_TIME64__)
 #define __ARCH_VDSO_CLOCK_GETTIME64_NAME "__vdso_clock_gettime64"
@@ -63,6 +64,13 @@ void *_get__dl__vdso_gettimeofday(void);
 void *_get__dl__vdso_gettimeofday(void)
 {
     return _dl__vdso_gettimeofday;
+}
+
+void *_dl__vdso_get_thread_area = 0;
+void *_get__dl__vdso_get_thread_area(void);
+void *_get__dl__vdso_get_thread_area(void)
+{
+    return _dl__vdso_get_thread_area;
 }
 
 typedef struct {
@@ -359,7 +367,18 @@ void load_vdso(void *sys_info_ehdr, char **envp ){
             continue;
         }
 #endif  /* defined(__UCLIBC_USE_TIME64__) */
-        
+
+        if ( 0 == _dl_strcmp( name, __ARCH_VDSO_GET_THREAD_AREA ) ){
+            _dl__vdso_get_thread_area = func_addr;
+#ifdef __SUPPORT_LD_DEBUG__
+            if ( _dl_debug_vdso != 0 ){
+                _dl_dprintf(2,"   %s at address %p\n", name, func_addr );
+            }
+#endif
+            continue;
+        }
+
+
 #ifdef __SUPPORT_LD_DEBUG__
         if ( _dl_debug_vdso != 0 ){
             _dl_dprintf(2,"   <%s> not handled\n", name );

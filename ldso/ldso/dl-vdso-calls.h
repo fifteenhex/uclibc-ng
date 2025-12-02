@@ -65,4 +65,7 @@ static int __attribute__ ((used)) __generic_vdso_gettimeofday(struct timeval *tv
     return __res;
 }
 
+typedef void* (*get_thread_area_func)(void);
+void __attribute__((weak)) *_get__dl__vdso_get_thread_area(void);
+
 #endif /* _DL_VDSO_CALLS_H */
